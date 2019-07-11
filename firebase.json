@@ -1,0 +1,23 @@
+{
+  "hosting": {
+    "public": "dist/chongsheng-jp",
+    "redirects": [
+       {
+         "source" : "/",
+         "destination" : "/index.html",
+         "type" : 301
+       }
+     ],
+    "rewrites":[
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ],
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
