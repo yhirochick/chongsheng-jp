@@ -1,0 +1,18 @@
+.fixed-bg {
+    min-height: 100vh;
+    background-attachment: fixed;
+    background-size: cover;
+    background-position: center;
+}
+
+.scroll-bg {
+    margin: 10px;
+}
+
+.bg01 {
+    background-image: url(/assets/images/P_20180101_100231.jpg);
+}
+
+.bg02 {
+    background-image: url(/assets/images/IMG_0057.jpg);
+}
