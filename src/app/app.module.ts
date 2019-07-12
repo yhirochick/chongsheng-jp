@@ -1,3 +1,4 @@
+import { MatCardModule } from '@angular/material/card';
 import { ChongshengdeModule } from './chongshengde/chongshengde.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -7,9 +8,11 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CoreModule } from './core/core.module';
+import { AboutComponent } from './about/about.component';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    AboutComponent,
   ],
   imports: [
     CoreModule,
@@ -18,7 +21,8 @@ import { CoreModule } from './core/core.module';
     BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
-    ChongshengdeModule
+    ChongshengdeModule,
+    MatCardModule
   ],
   providers: [],
   bootstrap: [AppComponent]
