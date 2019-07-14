@@ -18,20 +18,17 @@
 }
 
 .inner h1 {
-    font-size: 120px;
     color: #002a0d;
 }
 
 .inner button {
     position: absolute;
-    top: 90%;
+    top: 95%;
     left: 50%;
     transform: translateY(-50%) translateX(-50%);
     -webkit-transform: translateY(-50%) translateX(-50%);
     margin: 0;
-    width: 300px;
-    height: 100px;
-    font-size: 80px;
+
 }
 
 .scroll-bg {
@@ -44,4 +41,29 @@
 
 .bg02 {
     background-image: url(/assets/images/IMG_0057.jpg);
+}
+
+
+@media (min-width: 1200px) {/* 1200px以上*/
+    h1 {
+        font-size: 8rem;
+    }
+    button {
+        font-size: 4rem;
+        width: 300px;
+        height: 100px;
+    }
+}
+@media screen and (max-width: 640px) {/* 640px以下*/
+    body{
+        line-height: 2;
+    }
+    h1{
+        font-size: 3rem;
+    }
+    button {
+        font-size: 1.6rem;
+        width: 100px;
+        height: 50px;
+    }
 }
