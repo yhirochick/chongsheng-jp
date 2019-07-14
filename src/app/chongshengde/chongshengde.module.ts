@@ -1,7 +1,6 @@
-import { MatButtonModule } from '@angular/material/button';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
 import { ChongshengdeComponent } from './chongshengde.component';
 
 import { ChongshengdeRoutingModule } from './chongshengde-routing.module';
@@ -10,6 +9,7 @@ import { PostFormComponent } from './post-form/post-form.component';
 import { InfoComponent } from './info/info.component';
 import { ImageComponent } from './image/image.component';
 import { DescriptionComponent } from './description/description.component';
+import { MaterialModule } from '../material.module';
 
 
 
@@ -17,8 +17,9 @@ import { DescriptionComponent } from './description/description.component';
   imports: [
     CommonModule,
     ChongshengdeRoutingModule,
-    MatCardModule,
-    MatButtonModule
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule
   ],
   declarations: [
     ChongshengdeComponent,
