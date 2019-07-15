@@ -11,6 +11,8 @@ import { ImageComponent } from './image/image.component';
 import { DescriptionComponent } from './description/description.component';
 import { MaterialModule } from '../material.module';
 
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+
 
 
 @NgModule({
@@ -19,7 +21,8 @@ import { MaterialModule } from '../material.module';
     ChongshengdeRoutingModule,
     MaterialModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FontAwesomeModule,
   ],
   declarations: [
     ChongshengdeComponent,
