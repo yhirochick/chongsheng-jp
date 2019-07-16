@@ -1,5 +1,6 @@
 {
   "projects": {
-    "staging": "chongsheng-jp"
+    "staging": "chongsheng-jp",
+    "default": "chongsheng-jp"
   }
 }
