@@ -1,0 +1,18 @@
+[debug] [2019-07-17T07:06:39.568Z] ----------------------------------------------------------------------
+[debug] [2019-07-17T07:06:39.570Z] Command:       /home/yhirochick/.nodebrew/node/v12.3.1/bin/node /home/yhirochick/.nodebrew/current/bin/firebase functions:shell
+[debug] [2019-07-17T07:06:39.570Z] CLI Version:   7.1.0
+[debug] [2019-07-17T07:06:39.570Z] Platform:      linux
+[debug] [2019-07-17T07:06:39.570Z] Node Version:  v12.3.1
+[debug] [2019-07-17T07:06:39.848Z] Time:          Wed Jul 17 2019 16:06:39 GMT+0900 (GMT+09:00)
+[debug] [2019-07-17T07:06:39.849Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-07-17T07:06:39.856Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-07-17T07:06:39.856Z] > authorizing via signed-in user
+[debug] [2019-07-17T07:06:39.856Z] [iam] checking project chongsheng-jp for permissions ["firebase.projects.get"]
+[debug] [2019-07-17T07:06:39.858Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/chongsheng-jp:testIamPermissions  
+
+[debug] [2019-07-17T07:06:40.791Z] <<< HTTP RESPONSE 200
+[warn] ⚠  Your requested "node" version "8" doesn't match your global version "12"
+[debug] [2019-07-17T07:06:40.831Z] >>> HTTP REQUEST GET https://firebase.googleapis.com/v1beta1/projects/chongsheng-jp/adminSdkConfig  
+ 
+[debug] [2019-07-17T07:06:41.640Z] <<< HTTP RESPONSE 200
