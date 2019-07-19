@@ -1,13 +1,14 @@
 const functions = require('firebase-functions');
 
 const admin = require('firebase-admin');
-// const serviceAccount = require("../demoapp-fc840-firebase-adminsdk-loa5u-e19b2c160e.json");
+console.log(1);
+// const serviceAccount = require("/home/yhirochick/development/chongsheng-jp-firebase-adminsdk-gxyre-34fc766ea9.json");
 
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://demoapp-fc840.firebaseio.com"
+//   databaseURL: "https://chongsheng-jp.firebaseio.com/"
 // });
-console.log(1);
+// --
 admin.initializeApp();
 console.log(2);
 
@@ -65,42 +66,40 @@ const checkUser = (req, res, next) => {
 
 app.use(checkUser);
 
-app.post('/chongshengde/posts', (req, res) => {
+app.post('/chongshengde', (req, res) => {
     console.log(5);
     const message = {
         date: new Date().toJSON(),
         body: req.body.name,
     };
     console.log(req.body);
-    console.log(message);
+    console.log(message.body);
     console.log(6);
     const postsRef = admin.database().ref('/chongshengde/posts');
     postsRef.push(message);
-    console.log(7);
+    console.log(postsRef);
     res.header('Content-Type', 'application/json; charset=utf-8');
     console.log(8);
     res.status(201).send({result: "ok"});
 });
 
 
-app.get('/chongshengde/posts', (req, res) => {
-    const postsRef = admin.database().ref('chongshengde/posts').orderByChild('date').limitToLast(20);
+app.get('/chongshengde', (req, res) => {
+    const postsRef = admin.database().ref('/chongshengde/posts').orderByChild('date').limitToLast(20);
     postsRef.once('value', function(snapshot) {
-        const items = new Array();
+      const namesa = [];
         snapshot.forEach(function(childSnapshot) {
-            const message = childSnapshot.val();
-            message.id = childSnapshot.key;
-            items.push(message);
+            const post = childSnapshot.val();
+            namesa.push(post.name);
         });
-        items.reverse();
         res.header('Content-Type', 'application/json; charset=utf-8');
-        res.send({posts: items});
+        res.send({posts: namesa});
     });
 });
 
 
 exports.v1 = functions.https.onRequest(app);
-exports.sayHelloWorld = functions.https.onRequest((request, response) => {
-    console.log("Hello from Firebase!");   
-    response.send("Hello from Firebase!");
-});
+// exports.sayHelloWorld = functions.https.onRequest((request, response) => {
+//     console.log("Hello from Firebase!");   
+//     response.send("Hello from Firebase!");
+// });

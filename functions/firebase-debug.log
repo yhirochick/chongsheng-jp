@@ -1,0 +1,55 @@
+[debug] [2019-07-19T06:21:57.717Z] ----------------------------------------------------------------------
+[debug] [2019-07-19T06:21:57.719Z] Command:       /home/yhirochick/.nodebrew/node/v12.3.1/bin/node /home/yhirochick/.nodebrew/current/bin/firebase serve --only functions
+[debug] [2019-07-19T06:21:57.720Z] CLI Version:   7.0.2
+[debug] [2019-07-19T06:21:57.720Z] Platform:      linux
+[debug] [2019-07-19T06:21:57.720Z] Node Version:  v12.3.1
+[debug] [2019-07-19T06:21:58.003Z] Time:          Fri Jul 19 2019 15:21:57 GMT+0900 (GMT+09:00)
+[debug] [2019-07-19T06:21:58.003Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2019-07-19T06:21:58.012Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2019-07-19T06:21:58.013Z] > authorizing via signed-in user
+[debug] [2019-07-19T06:21:58.013Z] [iam] checking project chongsheng-jp for permissions ["firebase.projects.get"]
+[debug] [2019-07-19T06:21:58.015Z] >>> HTTP REQUEST POST https://cloudresourcemanager.googleapis.com/v1/projects/chongsheng-jp:testIamPermissions  
+
+[debug] [2019-07-19T06:21:59.048Z] <<< HTTP RESPONSE 200
+[debug] [2019-07-19T06:21:59.052Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/chongsheng-jp  
+ 
+[debug] [2019-07-19T06:21:59.967Z] <<< HTTP RESPONSE 200
+[warn] ⚠  Your requested "node" version "8" doesn't match your global version "12"
+[debug] [2019-07-19T06:22:00.004Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/291903009799:getServerAppConfig  
+ 
+[debug] [2019-07-19T06:22:00.563Z] <<< HTTP RESPONSE 200
+[info] ✔  functions: Emulator started at http://localhost:5000
+[info] i  functions: Watching "/home/yhirochick/development/chongsheng-jp/functions" for Cloud Functions...
+[debug] [2019-07-19T06:22:01.141Z] Functions runtime initialized.
+[debug] [2019-07-19T06:22:01.141Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-07-19T06:22:01.200Z] firebase-admin has been stubbed.
+[info] >  1
+[info] >  2
+[info] >  3
+[info] >  4
+[info] i  functions: HTTP trigger initialized at http://localhost:5000/chongsheng-jp/us-central1/v1
+[debug] [2019-07-19T06:22:06.181Z] Accepted request POST /chongsheng-jp/us-central1/v1/chongshengde --> v1
+[debug] [2019-07-19T06:22:06.741Z] Functions runtime initialized.
+[info] i  functions: Beginning execution of "v1"
+[debug] [2019-07-19T06:22:06.743Z] Disabled runtime features: {"functions_config_helper":true,"network_filtering":true,"timeout":true,"memory_limiting":true,"protect_env":true,"admin_stubs":true}
+[debug] [2019-07-19T06:22:06.807Z] firebase-admin has been stubbed.
+[info] >  1
+[info] >  2
+[info] >  3
+[info] >  4
+[debug] [2019-07-19T06:22:06.917Z] Trigger "v1" has been found, beginning invocation!
+[debug] [2019-07-19T06:22:06.917Z] 
+[debug] [2019-07-19T06:22:06.917Z] Running v1 in mode HTTPS
+[debug] [2019-07-19T06:22:06.923Z] {"socketPath":"/tmp/firebase_emulator_invocation_2065.sock"}
+[debug] [2019-07-19T06:22:06.928Z] [functions] Runtime ready! Sending request! {"socketPath":"/tmp/firebase_emulator_invocation_2065.sock"}
+[debug] [2019-07-19T06:22:06.952Z] Ephemeral server used!
+[debug] [2019-07-19T06:22:06.952Z] Bodyname=hossdf
+[info] >  5
+[info] >  [object Object]
+[info] >  hossdf
+[info] >  6
+[info] >  https://chongsheng-jp.firebaseio.com/chongshengde/posts
+[info] >  8
+[debug] [2019-07-19T06:22:07.020Z] Ephemeral server survived.
+[info] i  functions: Finished "v1" in ~1s
