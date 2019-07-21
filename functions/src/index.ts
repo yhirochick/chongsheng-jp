@@ -16,10 +16,16 @@ const app = express();
 const cors = require('cors')({origin: true});
 app.use(cors);
 
+interface Chongshengde {
+    id: string;
+    description: string;
+    date: string
+}
+
 app.post('/chongshengde', (req, res) => {
     const post = {
-        descritption: req.body.description,
-        date: new Date().toString()
+        date: new Date().toString(),
+        descritption: req.body.description
     }
     const postRef = db.ref('/chongshengde/posts');
     postRef.push(post, function(error){
@@ -30,6 +36,20 @@ app.post('/chongshengde', (req, res) => {
             res.header('Content-Type', 'application/json; charset=utf-8');
             res.status(201).send({result: "Data saved successfully."});
         }
+    });
+});
+
+app.get('/chongshengde', (req, res) => {
+    const postRef = db.ref('/chongshengde/posts');
+    postRef.once('value', function(snapshot){
+        const posts: Chongshengde[] = [];
+        snapshot.forEach(function(childSnapshot){
+            posts.push(childSnapshot.val());
+        });
+        res.header('Content-Type', 'application/json; charset=utf-8');
+        res.status(201).send({result: posts});
+    }, function (errorObject) {
+        console.log("The read failed: " + errorObject.code);
     });
 });
 
