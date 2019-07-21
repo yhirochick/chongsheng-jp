@@ -2,13 +2,13 @@ const functions = require('firebase-functions');
 
 const admin = require('firebase-admin');
 
-// const serviceAccount = require("/home/yhirochick/development/chongsheng-jp-firebase-adminsdk-gxyre-34fc766ea9.json");
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://chongsheng-jp.firebaseio.com/"
-// });
+const serviceAccount = require("/home/yhirochick/development/chongsheng-jp-firebase-adminsdk-gxyre-34fc766ea9.json");
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://chongsheng-jp.firebaseio.com/"
+});
 // --
-admin.initializeApp();
+// admin.initializeApp();
 const db = admin.database();
 
 const express = require('express');
@@ -17,9 +17,12 @@ const cors = require('cors')({origin: true});
 app.use(cors);
 
 app.post('/chongshengde', (req, res) => {
-    const ref = db.ref('/chongshengde/posts');
-    
-    ref.set("I'm writing data", function(error) {
+    const post = {
+        descritption: req.body.description,
+        date: new Date().toString()
+    }
+    const postRef = db.ref('/chongshengde/posts');
+    postRef.push(post, function(error){
         if (error) {
             res.header('Content-Type', 'application/json; charset=utf-8');
             res.status(201).send({result: "Data could not be saved." + error});
