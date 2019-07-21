@@ -1,9 +1,15 @@
+import { ChongshengdeService } from './../../service/chongshengde.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Overlay } from '@angular/cdk/overlay';
+import { ComponentPortal } from '@angular/cdk/portal';
+import { MatSpinner } from '@angular/material/progress-spinner';
+
 library.add(fas);
 
 
@@ -16,9 +22,20 @@ export class PostFormComponent implements OnInit {
 
   formGroup: FormGroup;
   titleAlert: string = 'This field is required';
-  post: any = '';
+  public description: string;
 
-  constructor(private formBuilder: FormBuilder) { }
+  spinner = this.overlay.create({
+    hasBackdrop: true,
+    positionStrategy: this.overlay
+      .position().global().centerHorizontally().centerVertically()
+  });
+
+  constructor(
+    private formBuilder: FormBuilder,
+    private chongshengdeService: ChongshengdeService,
+    private router: Router,
+    private overlay: Overlay
+    ) { }
 
   ngOnInit() {
     this.createForm();
@@ -32,8 +49,8 @@ export class PostFormComponent implements OnInit {
         null,
         [
           Validators.required,
-          Validators.minLength(5),
-          Validators.maxLength(10)
+          Validators.minLength(3),
+          Validators.maxLength(100)
         ]
       ],
       validate: ''
@@ -58,8 +75,17 @@ export class PostFormComponent implements OnInit {
     return this.formGroup.get('name') as FormControl;
   }
 
-  onSubmit(post) {
-    this.post = post;
+  onSubmit() {
+    if (this.description) {
+      this.spinner.attach(new ComponentPortal(MatSpinner));
+      this.chongshengdeService.post(this.description).subscribe(res => {
+        console.log(res);
+        this.spinner.detach();
+        this.router.navigate(['/posts']);
+      },
+      error => console.log(error)
+      );
+    }
   }
 
 }

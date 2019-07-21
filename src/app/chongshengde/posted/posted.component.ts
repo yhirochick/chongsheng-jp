@@ -1,3 +1,5 @@
+import { Chongshengde } from './../../shared/chongshengde';
+import { ChongshengdeService } from './../../service/chongshengde.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -7,15 +9,20 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostedComponent implements OnInit {
 
-  posts = [
-    1,
-    2,
-    3
-  ];
+  posts: Chongshengde[];
 
-  constructor() { }
+  constructor(private chongshengdeService: ChongshengdeService) { }
 
   ngOnInit() {
+    this.getPosts();
+  }
+
+  getPosts(): void {
+    this.chongshengdeService.get().subscribe((posts: Chongshengde[]) => {
+      this.posts = posts.reverse();
+    },
+    error => console.log(error)
+    );
   }
 
 
