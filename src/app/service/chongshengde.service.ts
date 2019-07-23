@@ -15,8 +15,8 @@ export class ChongshengdeService {
   constructor(private http: HttpClient) { }
 
 
-  post(desctiption: string): Observable<string> {
-    return this.http.post<string>(`${this.API}/chongshengde/`, {description: desctiption}, this.httpOptions);
+  post(desctiption: string, imageURL: string): Observable<string> {
+    return this.http.post<string>(`${this.API}/chongshengde/`, {description: desctiption, imageURL: imageURL}, this.httpOptions);
   }
 
   get(): Observable<Chongshengde[]> {
