@@ -29,6 +29,7 @@ export class PostFormComponent implements OnInit {
   uploadPercent: Observable<number>;
   uploadProgress: Observable<number>
   downloadURL: Observable<string>;
+  public imageURL: string;
   filename; string;
 
   spinner = this.overlay.create({
@@ -51,7 +52,6 @@ export class PostFormComponent implements OnInit {
   }
 
   createForm() {
-    let emailregex: RegExp = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     this.formGroup = this.formBuilder.group({
       description: [
         null,
@@ -61,6 +61,10 @@ export class PostFormComponent implements OnInit {
           Validators.maxLength(100)
         ]
       ],
+      imageURL: [
+        null,
+      ]
+      ,
       validate: ''
     });
   }
@@ -84,9 +88,9 @@ export class PostFormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.description) {
+    if (this.description && this.downloadURL) {
       this.spinner.attach(new ComponentPortal(MatSpinner));
-      this.chongshengdeService.post(this.description).subscribe(res => {
+      this.chongshengdeService.post(this.description, this.imageURL).subscribe(res => {
         console.log(res);
         this.spinner.detach();
         this.router.navigate(['/posts']);
@@ -109,7 +113,12 @@ export class PostFormComponent implements OnInit {
     this.uploadProgress = task.percentageChanges()
     // get notified when the download URL is available
     task.snapshotChanges().pipe(
-        finalize(() => this.downloadURL = ref.getDownloadURL() )
+        finalize(() => {
+          this.downloadURL = ref.getDownloadURL();
+          ref.getDownloadURL().subscribe(url => {
+            this.imageURL = url;
+          })
+        })
      )
     .subscribe()
   }
