@@ -3,13 +3,13 @@ const functions = require('firebase-functions');
 const admin = require('firebase-admin');
 
 // For localhost
-const serviceAccount = require("/home/yhirochick/development/chongsheng-jp-firebase-adminsdk-gxyre-34fc766ea9.json");
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://chongsheng-jp.firebaseio.com/"
-});
+// const serviceAccount = require("/home/yhirochick/development/chongsheng-jp-firebase-adminsdk-gxyre-34fc766ea9.json");
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://chongsheng-jp.firebaseio.com/"
+// });
 // --
-// admin.initializeApp();
+admin.initializeApp();
 const db = admin.database();
 
 const express = require('express');

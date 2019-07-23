@@ -12,6 +12,10 @@ import { AboutComponent } from './about/about.component';
 import { MaterialModule } from './material.module';
 import { MatProgressSpinnerModule, MatSpinner } from '@angular/material';
 import { OverlayModule } from '@angular/cdk/overlay';
+import { environment } from 'src/environments/environment';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFireStorageModule } from '@angular/fire/storage';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -28,7 +32,9 @@ import { OverlayModule } from '@angular/cdk/overlay';
     MaterialModule,
     HttpClientModule,
     MatProgressSpinnerModule,
-    OverlayModule
+    OverlayModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFireStorageModule
   ],
   entryComponents: [
     MatSpinner
