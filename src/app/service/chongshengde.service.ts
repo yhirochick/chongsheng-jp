@@ -7,8 +7,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ChongshengdeService {
-  // private API = 'https://us-central1-chongsheng-jp.cloudfunctions.net/v1';
-  private API = 'http://localhost:5000/chongsheng-jp/us-central1/v1';
+  private API = 'https://us-central1-chongsheng-jp.cloudfunctions.net/v1';
+  // private API = 'http://localhost:5000/chongsheng-jp/us-central1/v1';
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
