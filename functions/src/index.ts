@@ -26,13 +26,15 @@ app.use(function (req, res, next) {
 interface Chongshengde {
     id: string;
     description: string;
-    date: string
+    imageURL: string;
+    date: string;
 }
 
 app.post('/chongshengde', (req, res) => {
     const post = {
         date: new Date().toString(),
-        description: req.body.description
+        description: req.body.description,
+        imageURL: req.body.imageURL
     }
     const postRef = db.ref('/chongshengde/posts');
     postRef.push(post, function(error){

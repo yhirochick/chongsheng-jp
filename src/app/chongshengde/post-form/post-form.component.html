@@ -24,6 +24,7 @@
               </div>
               <img *ngIf="uploadProgress | async" [src]="downloadURL | async">
             </span>
+            <input type="hidden" [(ngModel)]="imageURL" formControlName="imageURL">
           </label>
         </div>
 
