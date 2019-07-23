@@ -10,14 +10,19 @@
     
         <div class="file is-boxed">
           <label class="file-label">
-            <input class="file-input" type="file" name="resume">
+            <input class="file-input" type="file" name="resume"  (change)="uploadFile($event)">
             <span class="file-cta">
               <span class="file-icon">
                 <fa-icon icon="upload"></fa-icon>
               </span>
               <span class="file-label">
-                添付ファイル ...
+                <span *ngIf="!filename">添付ファイル ...</span>
+                <span *ngIf="filename">{{ filename }}</span>
               </span>
+              <div class="progress" *ngIf="filename">
+                <div class="progress-bar" [ngStyle]="{ 'width': (uploadProgress | async) + '%' }"></div>
+              </div>
+              <img *ngIf="uploadProgress | async" [src]="downloadURL | async">
             </span>
           </label>
         </div>
