@@ -101,6 +101,7 @@ export class PostFormComponent implements OnInit {
   }
 
   uploadFile(event) {
+    if (event.request.url.indexOf('firebasestorage.googleapis.com') !== -1) { return; }
     const file = event.target.files[0];
     this.filename = file.name;
     const filePath = moment().format('x');
