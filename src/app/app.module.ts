@@ -16,11 +16,15 @@ import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireStorageModule } from '@angular/fire/storage';
 import { ServiceWorkerModule } from '@angular/service-worker';
+import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
+
 
 @NgModule({
   declarations: [
     AppComponent,
-    AboutComponent,
+    AboutComponent
   ],
   imports: [
     CoreModule,
@@ -36,7 +40,8 @@ import { ServiceWorkerModule } from '@angular/service-worker';
     OverlayModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireStorageModule,
-    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
+    AngularFireAuthModule,
   ],
   entryComponents: [
     MatSpinner

@@ -12,8 +12,41 @@ import { DescriptionComponent } from './description/description.component';
 import { MaterialModule } from '../material.module';
 
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { LoginFirebaseUIComponent } from '../login-firebase-ui/login-firebase-ui.component';
+import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
 
-
+const firebaseUiAuthConfig: firebaseui.auth.Config = {
+  autoUpgradeAnonymousUsers: false, // 匿名認証ユーザー自動アップグレード
+  signInFlow: 'redirect', // redirect or popup
+  signInOptions: [
+    firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+    {
+      scopes: [
+        'public_profile',
+        'email',
+        'user_likes',
+        'user_friends'
+      ],
+      customParameters: {
+        'auth_type': 'reauthenticate'
+      },
+      provider: firebase.auth.FacebookAuthProvider.PROVIDER_ID
+    },
+    firebase.auth.TwitterAuthProvider.PROVIDER_ID,
+    firebase.auth.GithubAuthProvider.PROVIDER_ID,
+    {
+      requireDisplayName: false,
+      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID
+    },
+    firebase.auth.PhoneAuthProvider.PROVIDER_ID,
+    firebaseui.auth.AnonymousAuthProvider.PROVIDER_ID
+  ],
+  tosUrl: 'aaa',
+  // privacyPolicyUrl: 'プライバシーポリシーのURL',
+  // signInSuccessUrl: 'https://google.com',
+  credentialHelper: firebaseui.auth.CredentialHelper.ACCOUNT_CHOOSER_COM,
+  siteName: 'my-app', 
+};
 
 @NgModule({
   imports: [
@@ -23,6 +56,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     FormsModule,
     ReactiveFormsModule,
     FontAwesomeModule,
+    FirebaseUIModule.forRoot(firebaseUiAuthConfig)
   ],
   declarations: [
     ChongshengdeComponent,
@@ -30,7 +64,8 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     PostFormComponent,
     InfoComponent,
     ImageComponent,
-    DescriptionComponent
+    DescriptionComponent,
+    LoginFirebaseUIComponent
   ]
 })
 export class ChongshengdeModule { }
