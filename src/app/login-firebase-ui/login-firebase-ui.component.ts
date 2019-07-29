@@ -16,6 +16,7 @@ export class LoginFirebaseUIComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.angularFireAuth.authState;
+    console.log(this.user);
   }
 
   // ログアウト

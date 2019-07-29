@@ -13,6 +13,7 @@ import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
 import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 library.add(fas);
 
@@ -32,6 +33,7 @@ export class PostFormComponent implements OnInit {
   downloadURL: Observable<string>;
   public imageURL: string;
   filename; string;
+  user;
 
   spinner = this.overlay.create({
     hasBackdrop: true,
@@ -45,11 +47,17 @@ export class PostFormComponent implements OnInit {
     private AngularFireDatabase: AngularFireDatabase,
     private router: Router,
     private overlay: Overlay,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private angularFireAuth: AngularFireAuth
     ) { }
 
   ngOnInit() {
     this.createForm();
+    this.angularFireAuth.authState.subscribe(user => {
+      this.user = user;
+      console.log(this.user);
+    });
+    
   }
 
   createForm() {
@@ -79,6 +87,7 @@ export class PostFormComponent implements OnInit {
       this.spinner.attach(new ComponentPortal(MatSpinner));
       const ref = this.AngularFireDatabase.list('chongshengde/posts');
       const value = {
+        user: this.user.displayName ? this.user.displayName : this.user.email ? this.user.email : "名無し",
         description: this.description,
         imageURL: this.imageURL,
         date: moment().format("YYYY/MM/DD HH:mm:ss")
