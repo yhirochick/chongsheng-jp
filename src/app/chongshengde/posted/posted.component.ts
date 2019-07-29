@@ -1,5 +1,4 @@
 import { Chongshengde } from './../../shared/chongshengde';
-import { ChongshengdeService } from './../../service/chongshengde.service';
 import { Component, OnInit } from '@angular/core';
 import { AngularFireDatabase } from '@angular/fire/database'
 import { Observable } from 'rxjs';
@@ -15,10 +14,9 @@ export class PostedComponent implements OnInit {
   data: Observable<any>;
 
   constructor(
-    private chongshengdeService: ChongshengdeService,
     private db: AngularFireDatabase
   ) { 
-    this.data = db.object('chongshengde').valueChanges();
+    this.data = db.list('chongshengde/posts', ref => ref.orderByChild('date').limitToFirst(5)).valueChanges();
   }
 
   ngOnInit() {
@@ -27,10 +25,8 @@ export class PostedComponent implements OnInit {
   
   getPosts(): void {
     this.data.subscribe(data => {
-      console.log(data.posts);
-      Object.keys(data.posts).reverse().forEach(key => {
-        this.posts.push(data.posts[key]);
-      });
+      console.log(data);
+      this.posts = data;
     },
     error => console.log(error)
     );
