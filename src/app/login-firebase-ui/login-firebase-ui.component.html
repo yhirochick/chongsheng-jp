@@ -6,7 +6,8 @@
 <div *ngIf="(user | async) || {} as user">
   <div *ngIf="user.uid">
     <!-- 認証されている場合 -->
-    <p>すでにログインしています。uid: {{user.uid}}</p>
+    <!-- <div>{{user | json}}</div> -->
+    <p>{{user.displayName ? user.displayName : user.email ? user.email : "ゲスト"}}としてログインしています。</p>
     <button (click)="logout()">ログアウト</button>
   </div>
 </div>
