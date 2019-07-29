@@ -48,7 +48,6 @@ export class PostFormComponent implements OnInit {
 
   ngOnInit() {
     this.createForm();
-    this.setChangeValidate();
   }
 
   createForm() {
@@ -63,29 +62,15 @@ export class PostFormComponent implements OnInit {
       ],
       imageURL: [
         null,
+        [
+          Validators.required,
+        ]
       ]
-      ,
-      validate: ''
     });
   }
 
-  setChangeValidate() {
-    this.formGroup.get('validate').valueChanges.subscribe(
-      (validate) => {
-        if (validate === '1') {
-          this.formGroup.get('name').setValidators([Validators.required, Validators.minLength(3)]);
-          this.titleAlert = 'You need to specify at least 3 characters';
-        } else {
-          this.formGroup.get('name').setValidators(Validators.required);
-        }
-        this.formGroup.get('name').updateValueAndValidity();
-      }
-    );
-  }
 
-  get name() {
-    return this.formGroup.get('name') as FormControl;
-  }
+
 
   onSubmit() {
     if (this.description && this.downloadURL) {
