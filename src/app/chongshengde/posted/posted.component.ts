@@ -1,6 +1,7 @@
 import { Chongshengde } from './../../shared/chongshengde';
-import { ChongshengdeService } from './../../service/chongshengde.service';
 import { Component, OnInit } from '@angular/core';
+import { AngularFireDatabase } from '@angular/fire/database'
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-posted',
@@ -9,17 +10,26 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PostedComponent implements OnInit {
 
-  posts: Chongshengde[];
+  posts: Chongshengde[] = [];
+  data: Observable<any>;
 
-  constructor(private chongshengdeService: ChongshengdeService) { }
+  constructor(
+    private db: AngularFireDatabase
+  ) { 
+    this.data = db.list(
+      'chongshengde/posts',
+      ref => ref.orderByChild('date').limitToFirst(5)
+    ).valueChanges();
+  }
 
   ngOnInit() {
     this.getPosts();
   }
-
+  
   getPosts(): void {
-    this.chongshengdeService.get().subscribe((posts: Chongshengde[]) => {
-      this.posts = posts.reverse();
+    this.data.subscribe(data => {
+      console.log(data);
+      this.posts = data;
     },
     error => console.log(error)
     );

@@ -12,6 +12,8 @@ import { MatSpinner } from '@angular/material/progress-spinner';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFireAuth } from '@angular/fire/auth';
 
 library.add(fas);
 
@@ -31,6 +33,7 @@ export class PostFormComponent implements OnInit {
   downloadURL: Observable<string>;
   public imageURL: string;
   filename; string;
+  user;
 
   spinner = this.overlay.create({
     hasBackdrop: true,
@@ -41,14 +44,20 @@ export class PostFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private chongshengdeService: ChongshengdeService,
+    private AngularFireDatabase: AngularFireDatabase,
     private router: Router,
     private overlay: Overlay,
-    private storage: AngularFireStorage
+    private storage: AngularFireStorage,
+    private angularFireAuth: AngularFireAuth
     ) { }
 
   ngOnInit() {
     this.createForm();
-    this.setChangeValidate();
+    this.angularFireAuth.authState.subscribe(user => {
+      this.user = user;
+      console.log(this.user);
+    });
+    
   }
 
   createForm() {
@@ -63,34 +72,27 @@ export class PostFormComponent implements OnInit {
       ],
       imageURL: [
         null,
+        [
+          Validators.required,
+        ]
       ]
-      ,
-      validate: ''
     });
   }
 
-  setChangeValidate() {
-    this.formGroup.get('validate').valueChanges.subscribe(
-      (validate) => {
-        if (validate === '1') {
-          this.formGroup.get('name').setValidators([Validators.required, Validators.minLength(3)]);
-          this.titleAlert = 'You need to specify at least 3 characters';
-        } else {
-          this.formGroup.get('name').setValidators(Validators.required);
-        }
-        this.formGroup.get('name').updateValueAndValidity();
-      }
-    );
-  }
 
-  get name() {
-    return this.formGroup.get('name') as FormControl;
-  }
+
 
   onSubmit() {
     if (this.description && this.downloadURL) {
       this.spinner.attach(new ComponentPortal(MatSpinner));
-      this.chongshengdeService.post(this.description, this.imageURL).subscribe(res => {
+      const ref = this.AngularFireDatabase.list('chongshengde/posts');
+      const value = {
+        user: this.user.displayName ? this.user.displayName : this.user.email ? this.user.email : "名無し",
+        description: this.description,
+        imageURL: this.imageURL,
+        date: moment().format("YYYY/MM/DD HH:mm:ss")
+      }
+      ref.push(value).then(res => {
         console.log(res);
         this.spinner.detach();
         this.router.navigate(['/posts']);
@@ -101,7 +103,6 @@ export class PostFormComponent implements OnInit {
   }
 
   uploadFile(event) {
-    if (event.request.url.indexOf('firebasestorage.googleapis.com') !== -1) { return; }
     const file = event.target.files[0];
     this.filename = file.name;
     const filePath = moment().format('x');
