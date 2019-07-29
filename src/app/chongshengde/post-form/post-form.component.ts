@@ -12,6 +12,7 @@ import { MatSpinner } from '@angular/material/progress-spinner';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
+import { AngularFireDatabase } from '@angular/fire/database';
 
 library.add(fas);
 
@@ -41,6 +42,7 @@ export class PostFormComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private chongshengdeService: ChongshengdeService,
+    private AngularFireDatabase: AngularFireDatabase,
     private router: Router,
     private overlay: Overlay,
     private storage: AngularFireStorage
@@ -75,7 +77,12 @@ export class PostFormComponent implements OnInit {
   onSubmit() {
     if (this.description && this.downloadURL) {
       this.spinner.attach(new ComponentPortal(MatSpinner));
-      this.chongshengdeService.post(this.description, this.imageURL).subscribe(res => {
+      const ref = this.AngularFireDatabase.list('chongshengde/posts');
+      const value = {
+        description: this.description,
+        imageURL: this.imageURL
+      }
+      ref.push(value).then(res => {
         console.log(res);
         this.spinner.detach();
         this.router.navigate(['/posts']);
