@@ -1,0 +1,13 @@
+<firebase-ui
+  (signInSuccessWithAuthResult)="successCallback($event)"
+  (signInFailure)="errorCallback($event)">
+</firebase-ui>
+
+<div *ngIf="(user | async) || {} as user">
+  <div *ngIf="user.uid">
+    <!-- 認証されている場合 -->
+    <!-- <div>{{user | json}}</div> -->
+    <p>{{user.displayName ? user.displayName : user.email ? user.email : "ゲスト"}}としてログインしています。</p>
+    <button (click)="logout()">ログアウト</button>
+  </div>
+</div>
