@@ -18,7 +18,7 @@ export class PostedComponent implements OnInit {
   ) { 
     this.data = db.list(
       'chongshengde/posts',
-      ref => ref.orderByChild('date').limitToFirst(5)
+      ref => ref.orderByChild('date').limitToLast(5)
     ).valueChanges();
   }
 
