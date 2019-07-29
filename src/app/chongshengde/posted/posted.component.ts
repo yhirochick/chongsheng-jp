@@ -16,7 +16,10 @@ export class PostedComponent implements OnInit {
   constructor(
     private db: AngularFireDatabase
   ) { 
-    this.data = db.list('chongshengde/posts', ref => ref.orderByChild('date').limitToFirst(5)).valueChanges();
+    this.data = db.list(
+      'chongshengde/posts',
+      ref => ref.orderByChild('date').limitToFirst(5)
+    ).valueChanges();
   }
 
   ngOnInit() {

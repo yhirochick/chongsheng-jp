@@ -80,7 +80,8 @@ export class PostFormComponent implements OnInit {
       const ref = this.AngularFireDatabase.list('chongshengde/posts');
       const value = {
         description: this.description,
-        imageURL: this.imageURL
+        imageURL: this.imageURL,
+        date: moment().format("YYYY/MM/DD HH:mm:ss")
       }
       ref.push(value).then(res => {
         console.log(res);
