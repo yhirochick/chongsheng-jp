@@ -1,6 +1,5 @@
 import { Chongshengde } from './../../shared/chongshengde';
 import { Component, OnInit } from '@angular/core';
-import { AngularFireDatabase } from '@angular/fire/database'
 import { Observable } from 'rxjs';
 import { post } from 'selenium-webdriver/http';
 import { AngularFireAuth } from '@angular/fire/auth';
@@ -18,20 +17,18 @@ export class PostedComponent implements OnInit {
   data: Observable<any>;
   user: Observable<firebase.User>;
    /** 取得したドキュメントを格納 */
-  private chongshengdeDocument: AngularFirestoreDocument<Chongshengde>;
+  // private chongshengdeDocument: AngularFirestoreDocument<Chongshengde>;
   /** 取得したコレクションを格納 */
   private chongshengdeCollection: AngularFirestoreCollection<Chongshengde>;
 
 
   constructor(
-    private db: AngularFireDatabase,
     private angularFireAuth: AngularFireAuth,
     private afs: AngularFirestore
   ) { 
 
-    this.chongshengdeDocument = afs.doc<Chongshengde>('items/39z9wtr35SAeAUjcWcTh');
-    this.chongshengdeCollection = afs.collection<Chongshengde>('posts');
-    this.post = this.chongshengdeDocument.valueChanges();
+    this.chongshengdeCollection = afs.collection<Chongshengde>('posts', ref => ref.orderBy("date", "desc"));
+    // this.post = this.chongshengdeDocument.valueChanges();
     this.posts = this.chongshengdeCollection.valueChanges();
     // this.data = db.list(
     //   'chongshengde/posts',
@@ -53,14 +50,14 @@ export class PostedComponent implements OnInit {
   //   );
   // }
 
-  like(id){
-    const post = this.afs.doc<Chongshengde>(`posts/${id}`).valueChanges();
-    post.subscribe(resp => {
-      console.log(resp);
-    },
-    error => console.log(error)
-    )
-  }
+  // like(id){
+  //   const post = this.afs.doc<Chongshengde>(`posts/${id}`).valueChanges();
+  //   post.subscribe(resp => {
+  //     console.log(resp);
+  //   },
+  //   error => console.log(error)
+  //   )
+  // }
 
 
 }
