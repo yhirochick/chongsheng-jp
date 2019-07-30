@@ -13,7 +13,6 @@ import { MatSpinner } from '@angular/material/progress-spinner';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
-import { AngularFireDatabase } from '@angular/fire/database';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 
@@ -49,8 +48,6 @@ export class PostFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private chongshengdeService: ChongshengdeService,
-    private AngularFireDatabase: AngularFireDatabase,
     private afs: AngularFirestore, 
     private router: Router,
     private overlay: Overlay,
