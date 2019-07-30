@@ -24,7 +24,6 @@ app.use(function (req, res, next) {
 });
 
 interface Chongshengde {
-    id: string;
     description: string;
     imageURL: string;
     date: string;
