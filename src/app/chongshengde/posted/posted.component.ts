@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { post } from 'selenium-webdriver/http';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
-
+import { map } from 'rxjs/operators';
 @Component({
   selector: 'app-posted',
   templateUrl: './posted.component.html',
@@ -28,8 +28,18 @@ export class PostedComponent implements OnInit {
   ) { 
 
     this.chongshengdeCollection = afs.collection<Chongshengde>('posts', ref => ref.orderBy("date", "desc"));
+    // https://github.com/angular/angularfire2/issues/1209#issuecomment-390507471
+    this.posts = this.chongshengdeCollection.snapshotChanges().pipe(
+      map(
+        changes => { return changes.map(a => {
+        const data = a.payload.doc.data() as Chongshengde;
+        data.id = a.payload.doc.id;
+        return data;
+      });
+      }
+    ));
     // this.post = this.chongshengdeDocument.valueChanges();
-    this.posts = this.chongshengdeCollection.valueChanges();
+    // this.posts = this.chongshengdeCollection.snapshotChanges();
     // this.data = db.list(
     //   'chongshengde/posts',
     //   ref => ref.orderByChild('date').limitToLast(5)
@@ -39,6 +49,7 @@ export class PostedComponent implements OnInit {
   ngOnInit() {
     this.user = this.angularFireAuth.authState;
     // this.getPosts();
+    
   }
   
   // getPosts(): void {
@@ -50,14 +61,15 @@ export class PostedComponent implements OnInit {
   //   );
   // }
 
-  // like(id){
-  //   const post = this.afs.doc<Chongshengde>(`posts/${id}`).valueChanges();
-  //   post.subscribe(resp => {
-  //     console.log(resp);
-  //   },
-  //   error => console.log(error)
-  //   )
-  // }
+  like(id){
+    const post = this.afs.doc<Chongshengde>(`posts/${id}`).snapshotChanges();
+    post.subscribe(resp => {
+      console.log(resp.payload.id);
+      console.log(resp.payload.data().like);
+    },
+    error => console.log(error)
+    )
+  }
 
 
 }
