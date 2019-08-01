@@ -96,7 +96,8 @@ export class PostFormComponent implements OnInit {
         user: this.user.displayName ? this.user.displayName : this.user.email ? this.user.email : "名無し",
         description: this.description,
         imageURL: this.imageURL,
-        date: moment().format("YYYY/MM/DD HH:mm:ss")
+        date: moment().format("YYYY/MM/DD HH:mm:ss"),
+        like: []
       }
       this.chongshengdeCollection.add(value).then(res => {
         console.log(res);
