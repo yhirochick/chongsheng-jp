@@ -28,6 +28,7 @@ export class PostedComponent implements OnInit {
     private angularFireAuth: AngularFireAuth,
     private afs: AngularFirestore
   ) { 
+<<<<<<< HEAD
 
     this.chongshengdeCollection = afs.collection<Chongshengde>('posts', ref => ref.orderBy("date", "desc"));
     // https://github.com/angular/angularfire2/issues/1209#issuecomment-390507471
@@ -46,6 +47,12 @@ export class PostedComponent implements OnInit {
     //   'chongshengde/posts',
     //   ref => ref.orderByChild('date').limitToLast(5)
     // ).valueChanges();
+=======
+    this.data = db.list(
+      'chongshengde/posts',
+      ref => ref.orderByChild('date').limitToLast(5)
+    ).valueChanges();
+>>>>>>> master
   }
 
   ngOnInit() {
