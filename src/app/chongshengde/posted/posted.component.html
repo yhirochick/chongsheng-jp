@@ -13,7 +13,7 @@
           <p>{{post.description}}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button mat-button (click)="like(post.id)">LIKE</button>
+          <button [matBadge]=post.like.length matBadgePosition="above after" matBadgeColor="accent" mat-button (click)="like(post.id)">LIKE</button>
           <button mat-button>SHARE</button>
         </mat-card-actions>
     </mat-card>
