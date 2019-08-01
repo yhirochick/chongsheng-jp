@@ -18,9 +18,6 @@ export class PostedComponent implements OnInit {
   data: Observable<any>;
   user: Observable<firebase.User>;
   uid: string;
-   /** 取得したドキュメントを格納 */
-  // private chongshengdeDocument: AngularFirestoreDocument<Chongshengde>;
-  /** 取得したコレクションを格納 */
   private chongshengdeCollection: AngularFirestoreCollection<Chongshengde>;
 
 
@@ -28,7 +25,6 @@ export class PostedComponent implements OnInit {
     private angularFireAuth: AngularFireAuth,
     private afs: AngularFirestore
   ) { 
-<<<<<<< HEAD
 
     this.chongshengdeCollection = afs.collection<Chongshengde>('posts', ref => ref.orderBy("date", "desc"));
     // https://github.com/angular/angularfire2/issues/1209#issuecomment-390507471
@@ -41,18 +37,7 @@ export class PostedComponent implements OnInit {
       });
       }
     ));
-    // this.post = this.chongshengdeDocument.valueChanges();
-    // this.posts = this.chongshengdeCollection.snapshotChanges();
-    // this.data = db.list(
-    //   'chongshengde/posts',
-    //   ref => ref.orderByChild('date').limitToLast(5)
-    // ).valueChanges();
-=======
-    this.data = db.list(
-      'chongshengde/posts',
-      ref => ref.orderByChild('date').limitToLast(5)
-    ).valueChanges();
->>>>>>> master
+
   }
 
   ngOnInit() {
@@ -60,19 +45,8 @@ export class PostedComponent implements OnInit {
     this.user.subscribe(user => {
       this.uid = user.uid;
     });
-    // this.getPosts();
-    
   }
   
-  // getPosts(): void {
-  //   this.data.subscribe(data => {
-  //     console.log(data);
-  //     this.posts = data;
-  //   },
-  //   error => console.log(error)
-  //   );
-  // }
-
   like(id){
     const post = this.afs.doc<Chongshengde>(`posts/${id}`);
     const postSnapshot = post.snapshotChanges().pipe(first());
