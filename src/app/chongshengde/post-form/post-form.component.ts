@@ -1,3 +1,4 @@
+import { Chongshengde } from './../../shared/chongshengde';
 import { ChongshengdeService } from './../../service/chongshengde.service';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -12,7 +13,7 @@ import { MatSpinner } from '@angular/material/progress-spinner';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
-import { AngularFireDatabase } from '@angular/fire/database';
+import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 
 library.add(fas);
@@ -34,6 +35,10 @@ export class PostFormComponent implements OnInit {
   public imageURL: string;
   filename; string;
   user;
+  post: Observable<Chongshengde>;
+  posts: Observable<Chongshengde[]>;
+  private chongshengdeCollection: AngularFirestoreCollection<Chongshengde>;
+  
 
   spinner = this.overlay.create({
     hasBackdrop: true,
@@ -43,13 +48,15 @@ export class PostFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private chongshengdeService: ChongshengdeService,
-    private AngularFireDatabase: AngularFireDatabase,
+    private afs: AngularFirestore, 
     private router: Router,
     private overlay: Overlay,
     private storage: AngularFireStorage,
     private angularFireAuth: AngularFireAuth
-    ) { }
+    ) {
+    this.chongshengdeCollection = afs.collection<Chongshengde>('posts');
+    this.posts = this.chongshengdeCollection.valueChanges();
+  }
 
   ngOnInit() {
     this.createForm();
@@ -85,14 +92,14 @@ export class PostFormComponent implements OnInit {
   onSubmit() {
     if (this.description && this.downloadURL) {
       this.spinner.attach(new ComponentPortal(MatSpinner));
-      const ref = this.AngularFireDatabase.list('chongshengde/posts');
       const value = {
         user: this.user.displayName ? this.user.displayName : this.user.email ? this.user.email : "名無し",
         description: this.description,
         imageURL: this.imageURL,
-        date: moment().format("YYYY/MM/DD HH:mm:ss")
+        date: moment().format("YYYY/MM/DD HH:mm:ss"),
+        like: []
       }
-      ref.push(value).then(res => {
+      this.chongshengdeCollection.add(value).then(res => {
         console.log(res);
         this.spinner.detach();
         this.router.navigate(['/posts']);
