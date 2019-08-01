@@ -1,8 +1,8 @@
 export interface Chongshengde {
-  id: string;
+  id?: string;
   user: string;
   description: string;
   imageURL: string;
   date: string;
-  like: string;
+  like: string[];
 }

@@ -5,6 +5,7 @@ import { post } from 'selenium-webdriver/http';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
+import { first } from 'rxjs/operators';
 @Component({
   selector: 'app-posted',
   templateUrl: './posted.component.html',
@@ -16,6 +17,7 @@ export class PostedComponent implements OnInit {
   post: Observable<Chongshengde>;
   data: Observable<any>;
   user: Observable<firebase.User>;
+  uid: string;
    /** 取得したドキュメントを格納 */
   // private chongshengdeDocument: AngularFirestoreDocument<Chongshengde>;
   /** 取得したコレクションを格納 */
@@ -48,6 +50,9 @@ export class PostedComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.angularFireAuth.authState;
+    this.user.subscribe(user => {
+      this.uid = user.uid;
+    });
     // this.getPosts();
     
   }
@@ -62,10 +67,17 @@ export class PostedComponent implements OnInit {
   // }
 
   like(id){
-    const post = this.afs.doc<Chongshengde>(`posts/${id}`).snapshotChanges();
-    post.subscribe(resp => {
-      console.log(resp.payload.id);
-      console.log(resp.payload.data().like);
+    const post = this.afs.doc<Chongshengde>(`posts/${id}`);
+    const postSnapshot = post.snapshotChanges().pipe(first());
+    postSnapshot.subscribe(resp => {
+      let value = resp.payload.data();
+      if(value.like.indexOf(this.uid) >= 0) {
+        value.like = value.like.filter(user => user != this.uid);
+        post.update(value);
+      } else {
+        value.like.push(this.uid);
+        post.update(value);
+      }
     },
     error => console.log(error)
     )
