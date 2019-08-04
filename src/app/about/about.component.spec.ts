@@ -11,6 +11,7 @@ describe('AboutComponent', () => {
       declarations: [ AboutComponent ]
     })
     .compileComponents();
+
   }));
 
   beforeEach(() => {
@@ -21,5 +22,12 @@ describe('AboutComponent', () => {
 
   it('should create', () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should render title in a h1 tag', () => {
+    const fixture = TestBed.createComponent(AboutComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('h1').textContent).toContain('沖縄的');
   });
 });
