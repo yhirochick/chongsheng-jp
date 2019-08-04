@@ -1,6 +1,9 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { LoginFirebaseUIComponent } from './login-firebase-ui.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
 
 describe('LoginFirebaseUIComponent', () => {
   let component: LoginFirebaseUIComponent;
@@ -8,7 +11,13 @@ describe('LoginFirebaseUIComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginFirebaseUIComponent ]
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      declarations: [ LoginFirebaseUIComponent ],
+      imports: [
+        AngularFireAuthModule,
+        AngularFireModule.initializeApp(environment.firebase),
+
+      ]
     })
     .compileComponents();
   }));
