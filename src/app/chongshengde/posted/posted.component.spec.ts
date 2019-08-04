@@ -1,6 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { PostedComponent } from './posted.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { MatBadgeModule } from '@angular/material';
+import { AngularFireModule } from '@angular/fire';
+import { environment } from 'src/environments/environment';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
 
 describe('PostedComponent', () => {
   let component: PostedComponent;
@@ -8,7 +13,15 @@ describe('PostedComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ PostedComponent ]
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      declarations: [ PostedComponent ],
+      imports: [
+        AngularFireModule.initializeApp(environment.firebase),
+        AngularFireAuthModule,
+        AngularFirestoreModule,
+        
+        MatBadgeModule
+      ]
     })
     .compileComponents();
   }));

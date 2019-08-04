@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { ChongshengdeComponent } from './chongshengde.component';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ChongshengdeComponent', () => {
   let component: ChongshengdeComponent;
@@ -8,7 +8,8 @@ describe('ChongshengdeComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChongshengdeComponent ]
+      schemas: [ CUSTOM_ELEMENTS_SCHEMA ],
+      declarations: [ ChongshengdeComponent ],
     })
     .compileComponents();
   }));
