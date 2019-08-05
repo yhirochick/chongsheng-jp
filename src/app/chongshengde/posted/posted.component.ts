@@ -18,6 +18,7 @@ export class PostedComponent implements OnInit {
   data: Observable<any>;
   user: Observable<firebase.User>;
   uid: string;
+  nextStartIndex: string;
   private chongshengdeCollection: AngularFirestoreCollection<Chongshengde>;
 
 
@@ -25,26 +26,44 @@ export class PostedComponent implements OnInit {
     private angularFireAuth: AngularFireAuth,
     private afs: AngularFirestore
   ) { 
-
-    this.chongshengdeCollection = afs.collection<Chongshengde>('posts', ref => ref.orderBy("date", "desc"));
-    // https://github.com/angular/angularfire2/issues/1209#issuecomment-390507471
-    this.posts = this.chongshengdeCollection.snapshotChanges().pipe(
-      map(
-        changes => { return changes.map(a => {
-        const data = a.payload.doc.data() as Chongshengde;
-        data.id = a.payload.doc.id;
-        return data;
-      });
-      }
-    ));
-
+    
   }
+
+  
 
   ngOnInit() {
     this.user = this.angularFireAuth.authState;
     this.user.subscribe(user => {
       this.uid = user.uid;
     });
+    this.afs.collection<Chongshengde>('posts', ref => {
+      return ref.orderBy("date", "desc").limit(1);
+    }).valueChanges().subscribe(f => {
+      this.nextStartIndex = f[0].date;
+      this.feedPosted(this.nextStartIndex,3);
+    });
+  }
+  feedPosted(startIndex, limit) {
+
+   
+    this.chongshengdeCollection = this.afs.collection<Chongshengde>('posts', ref => {
+      return ref.orderBy("date", "desc").startAt(startIndex).limit(limit);
+    });
+
+
+    this.posts = this.chongshengdeCollection.snapshotChanges().pipe(
+      map(changes => {
+        return changes.map(a => {
+          const data = a.payload.doc.data() as Chongshengde;
+          data.id = a.payload.doc.id;
+          this.nextStartIndex = a.payload.doc.data().date;
+          return data;
+        });
+      }
+    ));
+
+    
+
   }
   
   like(id){
@@ -62,6 +81,10 @@ export class PostedComponent implements OnInit {
     },
     error => console.log(error)
     )
+  }
+
+  next() {
+    this.feedPosted(this.nextStartIndex, 3);
   }
 
 
