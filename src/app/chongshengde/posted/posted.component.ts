@@ -1,11 +1,12 @@
 import { Chongshengde } from './../../shared/chongshengde';
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, merge } from 'rxjs';
 import { post } from 'selenium-webdriver/http';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
 import { map } from 'rxjs/operators';
 import { first } from 'rxjs/operators';
+import * as moment from 'moment';
 @Component({
   selector: 'app-posted',
   templateUrl: './posted.component.html',
@@ -19,6 +20,7 @@ export class PostedComponent implements OnInit {
   user: Observable<firebase.User>;
   uid: string;
   nextStartIndex: string;
+  limit: number = 3;
   private chongshengdeCollection: AngularFirestoreCollection<Chongshengde>;
 
 
@@ -39,15 +41,14 @@ export class PostedComponent implements OnInit {
     this.afs.collection<Chongshengde>('posts', ref => {
       return ref.orderBy("date", "desc").limit(1);
     }).valueChanges().subscribe(f => {
-      this.nextStartIndex = f[0].date;
-      this.feedPosted(this.nextStartIndex,3);
+      this.nextStartIndex = moment(f[0].date).add("seconds", 1).format("YYYY/MM/DD hh:mm:ss");
+      this.feedPosted(this.nextStartIndex,this.limit);
     });
   }
   feedPosted(startIndex, limit) {
 
-   
     this.chongshengdeCollection = this.afs.collection<Chongshengde>('posts', ref => {
-      return ref.orderBy("date", "desc").startAt(startIndex).limit(limit);
+      return ref.orderBy("date", "desc").startAfter(startIndex).limit(limit);
     });
 
 
@@ -56,11 +57,13 @@ export class PostedComponent implements OnInit {
         return changes.map(a => {
           const data = a.payload.doc.data() as Chongshengde;
           data.id = a.payload.doc.id;
-          this.nextStartIndex = a.payload.doc.data().date;
+          // this.nextStartIndex = a.payload.doc.data().date;
           return data;
         });
       }
     ));
+
+    this.limit += 3;
 
     
 
@@ -84,7 +87,7 @@ export class PostedComponent implements OnInit {
   }
 
   next() {
-    this.feedPosted(this.nextStartIndex, 3);
+    this.feedPosted(this.nextStartIndex, this.limit);
   }
 
 
