@@ -20,6 +20,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { FirebaseUIModule, firebase, firebaseui } from 'firebaseui-angular';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFireDatabaseModule } from '@angular/fire/database';
+import { PracticeModule } from './practice/practice.module';
 
 
 
@@ -36,6 +37,7 @@ import { AngularFireDatabaseModule } from '@angular/fire/database';
     FormsModule,
     ReactiveFormsModule,
     ChongshengdeModule,
+    PracticeModule,
     MaterialModule,
     HttpClientModule,
     MatProgressSpinnerModule,
