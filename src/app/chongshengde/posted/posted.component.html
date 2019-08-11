@@ -1,11 +1,6 @@
 <button style="margin:10px;" mat-raised-button color="primary" routerLink="/chongshengde/post-form">Post</button>
-<button
-  style="margin:10px;"
-  mat-raised-button
-  color="primary"
-  (click)="next()"
->next</button>
 <!-- <pre>{{(posts | async | json)}}</pre> -->
+
 <div *ngFor="let post of (posts | async) ">
     <mat-card class="example-card">
         <mat-card-header>
@@ -19,7 +14,7 @@
           <p>{{post.description}}</p>
         </mat-card-content>
         <mat-card-actions>
-          <button [matBadge]=post.like.length matBadgePosition="above after" matBadgeColor="accent" mat-button (click)="like(post.id)">LIKE</button>
+          <button [matBadge]=post.like.length matBadgePosition="above after" matBadgeColor="accent" mat-button (click)="chongshengdeService.like(post.id)">LIKE</button>
           <button mat-button>SHARE</button>
         </mat-card-actions>
     </mat-card>
