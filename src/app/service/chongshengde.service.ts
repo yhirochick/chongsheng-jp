@@ -2,6 +2,9 @@ import { Chongshengde } from './../shared/chongshengde';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuth } from '@angular/fire/auth';
+import { map, first } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -12,15 +15,52 @@ export class ChongshengdeService {
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
   };
-  constructor(private http: HttpClient) { }
 
+  private _chongshengde$: AngularFirestoreCollection<Chongshengde>;
+  private _posts$: Observable<Chongshengde[]>;
+  private _post$: Observable<Chongshengde>;
+  user: Observable<firebase.User>;
+  uid: string;
+  nextStartIndex: string;
 
-  post(desctiption: string, imageURL: string): Observable<string> {
-    return this.http.post<string>(`${this.API}/chongshengde/`, {description: desctiption, imageURL: imageURL}, this.httpOptions);
+  constructor(
+    private http: HttpClient,
+    private angularFireAuth: AngularFireAuth,
+    private afs: AngularFirestore
+  ) {
+    this.user = this.angularFireAuth.authState;
+    this.user.subscribe(user => {
+      this.uid = user.uid;
+    });
   }
 
-  get(): Observable<Chongshengde[]> {
-    return this.http.get<Chongshengde[]>(`${this.API}/chongshengde/`);
+  get posts$() {
+    return this._posts$;
+  }
+
+  get post$() {
+    return this._post$;
+  }
+
+  fetchPosts(): void {
+    this._posts$ = this.afs.collection<Chongshengde>('posts', ref => {
+      return ref.orderBy("date", "desc");
+    }).valueChanges({ idField: "id" });
+  }
+
+  like(id){
+    this._post$ = this.afs.doc<Chongshengde>(`posts/${id}`).valueChanges().pipe(first());
+    this._post$.subscribe(value => {
+      if(value.like.indexOf(this.uid) >= 0) {
+        value.like = value.like.filter(user => user != this.uid);
+        this.afs.doc<Chongshengde>(`posts/${id}`).update(value);
+      } else {
+        value.like.push(this.uid);
+        this.afs.doc<Chongshengde>(`posts/${id}`).update(value);
+      }
+    },
+    error => console.log(error)
+    )
   }
 
 }
