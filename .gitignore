@@ -53,3 +53,7 @@ debug.log
 
 #firebase
 .firebase
+
+
+#environment
+src/environment
