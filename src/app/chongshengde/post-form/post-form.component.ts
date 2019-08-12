@@ -1,20 +1,18 @@
 import { Chongshengde } from './../../shared/chongshengde';
 import { ChongshengdeService } from './../../service/chongshengde.service';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import { Observable } from 'rxjs';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Observable} from 'rxjs';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/free-solid-svg-icons';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { Overlay } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { MatSpinner } from '@angular/material/progress-spinner';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { finalize } from 'rxjs/operators';
 import * as moment from 'moment';
-import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
-import { AngularFireAuth } from '@angular/fire/auth';
 
 library.add(fas);
 
@@ -29,15 +27,12 @@ export class PostFormComponent implements OnInit {
   formGroup: FormGroup;
   titleAlert: string = 'This field is required';
   public description: string;
+  public imageURL: string;
   uploadPercent: Observable<number>;
   uploadProgress: Observable<number>
   downloadURL: Observable<string>;
-  public imageURL: string;
   filename; string;
-  user;
-  post: Observable<Chongshengde>;
   posts: Observable<Chongshengde[]>;
-  private chongshengdeCollection: AngularFirestoreCollection<Chongshengde>;
   
 
   spinner = this.overlay.create({
@@ -48,23 +43,15 @@ export class PostFormComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private afs: AngularFirestore, 
     private router: Router,
     private overlay: Overlay,
     private storage: AngularFireStorage,
-    private angularFireAuth: AngularFireAuth
-    ) {
-    this.chongshengdeCollection = afs.collection<Chongshengde>('posts');
-    this.posts = this.chongshengdeCollection.valueChanges();
+    private chongshengdeService: ChongshengdeService
+  ) {
   }
 
   ngOnInit() {
     this.createForm();
-    this.angularFireAuth.authState.subscribe(user => {
-      this.user = user;
-      console.log(this.user);
-    });
-    
   }
 
   createForm() {
@@ -92,15 +79,9 @@ export class PostFormComponent implements OnInit {
   onSubmit() {
     if (this.description && this.downloadURL) {
       this.spinner.attach(new ComponentPortal(MatSpinner));
-      const value = {
-        user: this.user.displayName ? this.user.displayName : this.user.email ? this.user.email : "名無し",
-        description: this.description,
-        imageURL: this.imageURL,
-        date: moment().format("YYYY/MM/DD HH:mm:ss"),
-        like: []
-      }
-      this.chongshengdeCollection.add(value).then(res => {
-        console.log(res);
+      this.chongshengdeService.description = this.description;
+      this.chongshengdeService.imageURL = this.imageURL;
+      this.chongshengdeService.savePost().then(res => {
         this.spinner.detach();
         this.router.navigate(['/posts']);
       },
@@ -115,7 +96,6 @@ export class PostFormComponent implements OnInit {
     const filePath = moment().format('x');
     const ref = this.storage.ref(filePath);
     const task = ref.put(file);
-    console.log(this.uploadProgress);
 
 
     // observe percentage changes

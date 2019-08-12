@@ -2,9 +2,10 @@ import { Chongshengde } from './../shared/chongshengde';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore } from '@angular/fire/firestore';
+import { AngularFirestoreDocument, AngularFirestoreCollection, AngularFirestore, DocumentReference } from '@angular/fire/firestore';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { map, first } from 'rxjs/operators';
+import * as moment from 'moment';
 
 @Injectable({
   providedIn: 'root'
@@ -18,10 +19,12 @@ export class ChongshengdeService {
 
   private _chongshengde$: AngularFirestoreCollection<Chongshengde>;
   private _posts$: Observable<Chongshengde[]>;
-  private _post$: Observable<Chongshengde>;
-  user: Observable<firebase.User>;
-  uid: string;
-  nextStartIndex: string;
+  private _post: Chongshengde;
+  private _description: string;
+  private _imageURL: string;
+  private user;
+  private uid: string;
+  private nextStartIndex: string;
 
   constructor(
     private http: HttpClient,
@@ -38,9 +41,18 @@ export class ChongshengdeService {
     return this._posts$;
   }
 
-  get post$() {
-    return this._post$;
+  get post() {
+    return this._post;
   }
+
+  set description(value: string) {
+    this._description = value;
+  }
+
+  set imageURL(value: string) {
+    this._imageURL = value;
+  }
+  
 
   fetchPosts(): void {
     this._posts$ = this.afs.collection<Chongshengde>('posts', ref => {
@@ -48,9 +60,20 @@ export class ChongshengdeService {
     }).valueChanges({ idField: "id" });
   }
 
+  savePost(): Promise<DocumentReference> {
+    this._post = {
+      user: this.user.displayName ? this.user.displayName : this.user.email ? this.user.email : "名無し",
+      description: this._description,
+      imageURL: this._imageURL,
+      date: moment().format("YYYY/MM/DD HH:mm:ss"),
+      like: []
+    }
+    return this.afs.collection<Chongshengde>('posts').add(this.post);
+  }
+
   like(id){
-    this._post$ = this.afs.doc<Chongshengde>(`posts/${id}`).valueChanges().pipe(first());
-    this._post$.subscribe(value => {
+    const selectedPost = this.afs.doc<Chongshengde>(`posts/${id}`).valueChanges().pipe(first());
+    selectedPost.subscribe(value => {
       if(value.like.indexOf(this.uid) >= 0) {
         value.like = value.like.filter(user => user != this.uid);
         this.afs.doc<Chongshengde>(`posts/${id}`).update(value);
