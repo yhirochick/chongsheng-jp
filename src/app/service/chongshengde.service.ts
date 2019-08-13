@@ -22,6 +22,7 @@ export class ChongshengdeService {
   private _post: Chongshengde;
   private _description: string;
   private _imageURL: string;
+  private _limit: number = 3;
   private user;
   private uid: string;
   private nextStartIndex: string;
@@ -45,6 +46,10 @@ export class ChongshengdeService {
     return this._post;
   }
 
+  get limit() {
+    return this._limit;
+  }
+
   set description(value: string) {
     this._description = value;
   }
@@ -53,10 +58,13 @@ export class ChongshengdeService {
     this._imageURL = value;
   }
   
+  set limit(value: number) {
+    this._limit = value;
+  }
 
   fetchPosts(): void {
     this._posts$ = this.afs.collection<Chongshengde>('posts', ref => {
-      return ref.orderBy("date", "desc");
+      return ref.orderBy("date", "desc").limit(this._limit);
     }).valueChanges({ idField: "id" });
   }
 
@@ -85,5 +93,6 @@ export class ChongshengdeService {
     error => console.log(error)
     )
   }
+
 
 }

@@ -18,4 +18,11 @@ export class PostedComponent implements OnInit {
     this.posts = this.chongshengdeService.posts$;
   }
 
+  next() {
+    const currentLimit = this.chongshengdeService.limit; 
+    this.chongshengdeService.limit = currentLimit + 3;
+    this.chongshengdeService.fetchPosts();
+    this.posts = this.chongshengdeService.posts$;
+  }
+
 }
