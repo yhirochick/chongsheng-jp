@@ -1,0 +1,10 @@
+version: '3'
+
+services:
+  node:
+    build: .
+    ports:
+      - "4200:4200"
+    volumes:
+      - ".:/chongsheng-jp"
+    tty: true
