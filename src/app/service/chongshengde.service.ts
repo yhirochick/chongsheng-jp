@@ -25,6 +25,8 @@ export class ChongshengdeService {
   private _limit: number = 3;
   private user;
   private uid: string;
+  private displayName: string;
+  private email: string;
   private nextStartIndex: string;
 
   constructor(
@@ -35,6 +37,8 @@ export class ChongshengdeService {
     this.user = this.angularFireAuth.authState;
     this.user.subscribe(user => {
       this.uid = user.uid;
+      this.displayName = user.displayName;
+      this.email = user.email;
     });
   }
 
@@ -67,15 +71,15 @@ export class ChongshengdeService {
       return ref.orderBy("date", "desc").limit(this._limit);
     }).valueChanges({ idField: "id" });
   }
-
+  
   savePost(): Promise<DocumentReference> {
     this._post = {
-      user: this.user.displayName ? this.user.displayName : this.user.email ? this.user.email : "名無し",
+      user: this.displayName ? this.displayName : this.email ? this.email : "名無し",
       description: this._description,
       imageURL: this._imageURL,
       date: moment().format("YYYY/MM/DD HH:mm:ss"),
       like: []
-    }
+    };
     return this.afs.collection<Chongshengde>('posts').add(this.post);
   }
 
