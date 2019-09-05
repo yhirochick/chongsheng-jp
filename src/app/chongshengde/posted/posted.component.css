@@ -12,41 +12,42 @@
 }
 
 #chat-bot {
+    width: 100%;
+    height: 50%;
     position: fixed;
     bottom: 0;
-    right: 0;
-    width: 300px;
-    height: 400px;
+    /* background-color: green; */
+}
+
+#kizuna {
+    position: absolute;
+    right: -50px;
+    bottom: 0;
+    width: 50%;
+    height: 0;
+    padding-top: 50%;
     background-image: url(/assets/images/kizunaai.png);
     background-size: cover;
 }
 #greetings {
-    position: relative;
-    display: inline-block;
-    margin: 1.5em 15px 1.5em 0;
-    padding: 0 5px;
-    width: 130px;
-    height: 100px;
-    line-height: 90px;
+    position: absolute;
+    right: 75%;
+    bottom: 50%;
+    width: 30%;
+    height: 20%;
+    line-height: 3vw;
     text-align: center;
     color: #FFF;
-    font-size: 20px;
+    font-size: 3.5vw;
     font-weight: bold;
     background: #a58eff;
     border-radius: 50%;
     box-sizing: border-box;
   }
   
-  #greetings:before {
-    content: "";
-    position: absolute;
-    bottom: -8px;
-    right: -2px;
-    margin-top: -15px;
-    border: 15px solid transparent;
-    border-left: 15px solid #a58eff;
-    z-index: 0;
-    -webkit-transform: rotate(45deg);
-    transform: rotate(45deg);
+
+
+  #greetings p {
+      margin: 10px;
   }
   
