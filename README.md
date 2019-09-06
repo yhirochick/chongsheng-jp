@@ -6,6 +6,8 @@ ChongShengとは中国語で冲绳と発音したときの読み方です。
 
 フレームワークにはAngularを使用し、ホスティング、データベースにはFirebaseを使用しています。(Hosting, Cloud FireStore)
 
+URL: https://chongsheng.jp
+
 # トップページ
 
 名護にドライブに行ったときの写真を背景にしています。特に意味はありません。
