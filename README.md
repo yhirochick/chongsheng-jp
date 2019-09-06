@@ -1,27 +1,61 @@
 # ChongshengJp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.0.3.
+このプロジェクトは私のポートフォリオ作成のために作られました。将来的には沖縄に来る中国人観光客をターゲットにした観光スポット共有サービスのようなものにしたいと思っています。
 
-## Development server
+ChongShengとは中国語で冲绳と発音したときの読み方です。
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+フレームワークにはAngularを使用し、ホスティング、データベースにはFirebaseを使用しています。(Hosting, Cloud FireStore)
 
-## Code scaffolding
+URL: https://chongsheng.jp
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# トップページ
 
-## Build
+名護にドライブに行ったときの写真を背景にしています。特に意味はありません。
+｢沖縄的｣というキーワードは｢沖縄の｣という意味で使っています。沖縄のいろんなスポットを共有するというイメージです。
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+｢POST｣のボタンをおすと投稿画面に遷移します。
+ヘッダーの｢ChongSheng Spot｣を押すとトップページに遷移します。
+ヘッダーの｢Posts｣を押すと投稿一覧画面に遷移します。
 
-## Running unit tests
+# 投稿画面
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+画面上部にログイン用のボタンが各サービスごとに表示されます。
+ログインしないと投稿できませんが、最後の｢Continue as guest｣でゲストログインしても投稿は可能です。
+ログインにはfirebaseのAuthenticationを使っています。
 
-## Running end-to-end tests
+テキストを3文字以上と画像を添付することで投稿できます。
 
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
+# 投稿一覧画面
 
-## Further help
+添付した写真とテキストが表示されます。
+｢LIKE｣ボタンでいいねをすることができます。
+｢SHARE｣ボタンは未実装です。
+｢next｣ボタンで次の3件を追加で表示できます。
+(現状ではページ上部にスクロールされてしまいます。)
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+右下に表示されるキャラクターはサイトの使い方など説明してくれる感じを想定しています。
+
+## インストール
+
+```
+git clone git@github.com:yhirochick/chongsheng-jp.git
+cd chongsheng-jp
+npm install
+```
+※Firebaseの認証情報を各自設定する必要があります。
+
+## 開発サーバー
+
+```
+ng serve --open
+```
+ブラウザで `http://localhost:4200/` が開かれ、サイトが表示されます。
+ファイルを編集すると自動でリロードされ、変更が反映されます。
+
+## ビルド
+
+```
+ng build --prod && npm run ngswfix
+```
+ビルド後に追加のコマンドを実行しています。
+サファリで画像がアップロードできない不具合を回避しています。→( https://github.com/yhirochick/chongsheng-jp/pull/3 )
